@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 import { query, where, onSnapshot } from "firebase/firestore";
 import matchers from '@testing-library/jest-dom/matchers'
 
-import {getPosts} from './actions/posts';
+import {createPosts, getPosts,deletePosts,likePosts} from './actions/posts';
 import axios from 'axios'
 export function Mainpage(props){
     const [post_input,setPostinput]=useState('')
@@ -31,12 +31,12 @@ export function Mainpage(props){
     const [comments,setComments]=useState("")
     const [commentss,setCommentss]=useState()
     const [deleteee,setDeleteee]=useState("")
-    const [emailUser,setEmailUser]=useState("");
+    const [emailUser,setEmailUser]=useState();
     
     
-//const {currentUser}=useContext(AuthContext)
+const {currentUserr}=useContext(AuthContext)
 const currentUser={
-    displayName:"Monish Kumar B",photoURL:"profile.jpeg",email:"monishkumar.cs21@bitsathy.ac.in"
+    displayName:currentUserr.displayName,photoURL:"profile.jpeg",email:"monishkumar.cs21@bitsathy.ac.in"
 }
 const [posts,setPost]=useState([]);
 const dispatch=useDispatch();
@@ -68,7 +68,7 @@ useEffect(()=>{
 },[dispatch])
    
 const classes =useSelector((state)=>state.posts);
-console.log(classes);
+
 const handleSubmit=async(e)=>{
     setRes_message(0)
     e.preventDefault()
@@ -78,44 +78,17 @@ const handleSubmit=async(e)=>{
     const displayName=currentUser.displayName;
     console.log(file)
     console.log(profileurl)
-
-        try{
-            await Axios.post("http://localhost:3001/bit_sih/users",
-          {
-              namee:currentUser.displayName,
-              message:message,
-              photoURL:file,
-              profilepic:profileurl,
-          }
-          )}catch(err){
-            console.log("error in storage cloud: "+err)
-          }
-          setPostinput("");
-    setRes_message(1)
-    dispatch(getPosts());
-
+    if(profileurl==undefined){
+        profileurl="monish";
+    }
+    dispatch(createPosts(currentUser.displayName,message,file,profileurl));
 }
-const delete_post=(id)=>{
-    Axios.delete(`http://localhost:3001/bit_sih/users/delete/${id}`)
-    .then(()=>{
-        console.log("successful!!")
-    });
-    const math=Math.random() * (1000 - 1) + 1
-    setDeleteee(math)
-    dispatch(getPosts());
 
-}
 const like_post=(id)=>{
-    setEvents(5)
-    Axios.delete(`http://localhost:3001/bit_sih/users/update/${id}`)
-    .then(()=>{
-        console.log("successfully liked !!")
-    });
-    const math=Math.random() * (1000 - 1) + 1
-    setEvents(math)
 
-
+    dispatch(likePosts(id));
 }
+
 const comment=(id)=>{
 
     Axios.post(`http://localhost:3001/bit_sih/users/comments`,{
@@ -208,7 +181,6 @@ const getimageUrl=()=>{
             
         }
     })
-
 }
 
 const handleSubmit=(e)=>{
@@ -242,14 +214,6 @@ uploadTask.on(
 );
 }*/
 const leaderboard_array=[1,2,3,4,5]
-for (let i = 0; i <currentUser.email.length-1; i++) {
-    if(currentUser.email.substring(i, i+1)=="."){
-        console.log(currentUser.email.substring(0, i));
-       currentUser.displayName =currentUser.email.substring(0, i);
-        break;
-    }
-    
-}
     return(
         <>
 <div className='content-entire'>
@@ -318,7 +282,7 @@ for (let i = 0; i <currentUser.email.length-1; i++) {
                 <div className='message-upper-content'><h5 style={{marginTop:"1px"}}>{message.name}</h5>
                 <p style={{fontSize:"11px",marginTop:"-20px",color:"grey"}}>In nature, nothing is perfect and everything is perfect🍃.</p></div></div>
                 <button onClick={()=>{
-                    delete_post(message._id)
+                    dispatch(deletePosts(message._id))
                 }}>Delete</button>
                 </div>
                 <h3>{message.message}</h3>
@@ -345,7 +309,7 @@ for (let i = 0; i <currentUser.email.length-1; i++) {
                         message.comments.map(comment=>{
                             return(
                                <div className='comment'style={{padding:"0.5px 10px"}}>
-                               <div className='comment-header' style={{display:"flex",flexDirection:"row",justifyContent:'flex-start',gap:"7px",marginTop:"10px"}}><img src={message.photoURL} style={{height:"40px",width:"40px",borderRadius:"50%",marginTop:"10px"}}/>
+                               <div className='comment-header' style={{display:"flex",flexDirection:"row",justifyContent:'flex-start',gap:"7px",marginTop:"10px"}}><img src={currentUser.photoURL} style={{height:"40px",width:"40px",borderRadius:"50%",marginTop:"10px"}}/>
                                <div style={{backgroundColor:"#F0F0F0",padding:"0px 15px",paddingBottom:"2px",width:"100%",borderRadius:"0px 15px 15px 15px"}}><h3 style={{fontSize:"15px"}}>{currentUser.displayName}</h3><p style={{fontSize:"11px",marginTop:"-20px",color:"grey"}}>In nature, nothing is perfect and everything is perfect🍃</p>
                                <p style={{marginTop:"-2px",marginLeft:"6px",fontFamily:"Exo"}}>{comment}</p>
                     <div className='response' style={{marginTop:"-11px",display:"flex",justifyContent:"flex-start",gap:"20px"}}>
@@ -359,9 +323,6 @@ for (let i = 0; i <currentUser.email.length-1; i++) {
                     </div>
                     </div>
                     </div>
-
-
-                           
                                </div>
                             )
                         })

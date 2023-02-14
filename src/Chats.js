@@ -10,25 +10,20 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebases";
 
 export const Chats=()=>{
-    const [userlog,setuserlog]=useState({});
+    const [loading,setLoading]=useState(true);
     //onAuthStateChanged(auth,(currentUser)=>{
      //   setuserlog(currentUser);
     //})
-    const {currentUser}=useContext(AuthContext);
-    const [loading,setLoading]=useState(true);
-    for (let i = 0; i <currentUser.email.length-1; i++) {
-        if(currentUser.email.substring(i, i+1)=="."){
-            console.log(currentUser.email.substring(0, i));
-           currentUser.displayName =currentUser.email.substring(0, i);
-            break;
-        }
-    }
-    console.log(currentUser);
+    const {currentUserr}=useContext(AuthContext);
+    
+
+
+    console.log(currentUserr.email);
     const user={
-        userName:currentUser.displayName,
+        userName:currentUserr.displayName,
         photoURL:"https://images.squarespace-cdn.com/content/v1/562cfd50e4b0db46045fb676/1603315211843-NOJ0JY8WNGQB58VJ1A3M/image-asset.jpeg?format=1500w",
-        email:currentUser.email,
-        uid:currentUser.uid
+        email:currentUserr.email,
+        uid:currentUserr.uid
     }
     const getFile =async (url)=>{
         const response =await fetch(url);
@@ -36,14 +31,16 @@ export const Chats=()=>{
         return new File([data],"userPhoto.jpg",{type:'image/jpeg'})
     }
     useEffect(()=>{
-        if(!user){
-            return;
+        if(currentUserr.displayName==undefined){
+            console.log("siufghiuhgiusfngiojsfgnijsbgij")
         }
+        else{
+            console.log("im in")
         Axios.get('https://api.chatengine.io/users/me',{
             headers:{
-                projectID:"5787cc32-3ef8-4a5e-a67f-69edc208d8f2",
+                projectID:"c2277920-9bd1-412e-b64e-a270b273c807",
                 userName:user.userName,
-                userSecret:user.userSecret
+                userSecret:user.uid
             }
         })
         .then(()=>{
@@ -63,7 +60,7 @@ export const Chats=()=>{
                 Axios.post("https://api.chatengine.io/users",
                 formdata,{
                     headers:{
-                        'Private-Key':'{{dd60345e-263f-4e7c-9cce-c4ddb8ac2b56}}'
+                        'Private-Key':'{{33a0d3fd-f3d0-4be8-85d4-fdb0df9acf37}}'
                     }
                 }
                 ).then(()=>{
@@ -73,16 +70,19 @@ export const Chats=()=>{
                     console.log(err)
                 })
             })
-        })
-    },[user])
+        })}
+    },[currentUserr.displayName])
     return(
-        <div className="chat-page">
+        <div>
+        {(currentUserr.displayName)? 
+            <div className="chat-page">
             <ChatEngine
             height="calc(100vh)"
-            projectID="5787cc32-3ef8-4a5e-a67f-69edc208d8f2"
-            userName={user.userName}
-            userSecret={user.uid}
+            projectID="c2277920-9bd1-412e-b64e-a270b273c807"
+            userName={currentUserr.displayName}
+            userSecret={currentUserr.uid}
             />
+        </div>:<h1 style={{position:"relative",textAlign:"center"}}>Loading...</h1>}
         </div>
     )
 }

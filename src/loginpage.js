@@ -19,7 +19,7 @@ export function LoginPage(props){
     const [err,setErr]=useState(false)
     const [count,setCount]=useState(0)
     const navigate=useNavigate()
-    const [userName,setUserName]=useState()
+    const [userName,setUserName]=useState("")
     const [userID,setUserID]=useState()
 
     const [regEmail,setEmail]=useState("");
@@ -27,9 +27,7 @@ export function LoginPage(props){
     const [loginPass,setloginPass]=useState("");
     const [logEmail,setloginEmail]=useState("");
     const [user,setUser]=useState({});
-onAuthStateChanged(auth,(currentUser)=>{
-      setUser(currentUser);
-    });
+    
 
 const register = async(e)=>{
   e.preventDefault()
@@ -147,19 +145,15 @@ cookies.set('email',email, { path: '/' });
             }}>Sign in</span></p></div>
         <form >
         <div className='login-div-2'><div className='login-div1'><label>Name:</label>
-        <input type="text" value={userName} onChange={(event)=>{
-          setUserName(event.target.value);
-        }}/></div>
+        <input type="text" value={userName} onChange={(event)=>setUserName(event.target.value)}/></div>
         <div className='login-div1'>
         <label>Email:</label>
-        <input type="text" value={regEmail} onChange={(event)=>{
-          setEmail(event.target.value);
-        }}/></div>
+        <input type="text" value={regEmail} onChange={(e)=>setEmail(e.target.value)
+        }/></div>
         <div className='login-div1'>
         <label>Password:</label>
-        <input type="password" value={regPass} onChange={(event)=>{
-          setPass(event.target.value);
-        }}/></div>
+        <input type="password" value={regPass} onChange={(e)=>setPass(e.target.value)
+        }/></div>
         <div className='login-div1' >
         <input  style={{display:"none"}}type="file" id="file"/>
         <label htmlFor='file' style={{color:"green",fontWeight:"600"}}>Add an avatar <i class="fa fa-file-photo-o" style={{fontSize:"20px"}}></i></label></div>

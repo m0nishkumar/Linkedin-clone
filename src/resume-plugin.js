@@ -1,11 +1,13 @@
-import React,{useState} from 'react'
+import React,{useState,createRef,useRef,useEffect} from 'react'
 import { ResumeContact } from './resume-contact'
 import { ResumeWork } from './Resume-work'
 import { ResumeExperience } from './resume-job'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'    
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons'
-
+import { useScreenshot } from 'use-react-screenshot'
+import html2canvas from "html2canvas";
+import "./index.css"
 library.add( faCheckSquare, faCoffee)
 
 export function Plugin(){
@@ -24,6 +26,26 @@ export function Plugin(){
     const [email,setEmail]=useState("monishkumar@4050gamil.com")
     const [description,setDescription]=useState("I have just started #300daysofcode to improve my skills in react js,node js and CSS.I believe i will drag myself till the end 🤠.I will post my learning for the day along with screenshot I have accomplished for the day.It's an experiment to test compound growth 📈.The compound effect is the strategy of reaping huge rewards 🏆 from small, seemingly insignificant actions.Sounds interesting right,let's experiment it over #300daysofcode 🚀..")
     const page_array=["Contact Information","Education","Work Experience"]
+    const ref = createRef(null); 
+    const exportRef = useRef();
+    const exportAsImage = async (element, imageFileName) => {
+        const canvas = await html2canvas(element);
+        const image = canvas.toDataURL("image/png", 1.0);
+        downloadImage(image, imageFileName);
+        };const downloadImage = (blob, fileName) => {
+        const fakeLink = window.document.createElement("a");
+        fakeLink.style = "display:none;";
+        fakeLink.download = fileName;
+        
+        fakeLink.href = blob;
+        
+        document.body.appendChild(fakeLink);
+        fakeLink.click();
+        document.body.removeChild(fakeLink);
+        
+        fakeLink.remove();
+        };
+    // export default exportAsImage;
      const resume_contact=()=>{
         if(page==0){
             return<ResumeContact setName={setName} setNamelast={setNamelast} setJob={setJob} setDescription={setDescription} setAddress={setAddress} setCity={setCity} setPhone={setPhone} setPinocde={setPinocde} setEmail={setEmail} setLink={setLink} setLinktag={setLinktag} setState={setState}/>;
@@ -34,9 +56,10 @@ export function Plugin(){
             return <ResumeExperience />;
         }
     }
+
     return(
         <div className='content-plugin'>
-       <div className='output-section' style={{backgroundColor:"white",borderRadius:"7px",width:"50vw",marginLeft:"20px",height:"600px"}}>
+       <div  ref={exportRef} className='output-section' style={{backgroundColor:"white",borderRadius:"7px",width:"50vw",marginLeft:"20px",height:"600px"}}>
            <div className='header-resume'style={{backgroundColor:color[0],padding:"20px",color:color[1]}}> 
            <div><h2 style={{display:"inline"}}>{name}</h2>
             <h2 style={{display:"inline"}}>{" "+namelast}</h2>
@@ -71,6 +94,7 @@ export function Plugin(){
 
                 </div>
             </div>
+
                 <h1>{page_array[page]}</h1>
             <div style={{display:"flex",flexDirection:"column",justifyContent:"space-around",alignItems:"center",height:"450px",width:"48vw"}}>
                 {resume_contact()}
@@ -85,7 +109,11 @@ export function Plugin(){
                 else{
                     setPage(page+1)
                 }
-            }}>{page==page_array.length-1?<i class="gg-check"></i>:<i class="gg-arrow-right"></i>}</button>
+            }}>{page==page_array.length-1?<i class="fa fa-check" style={{
+                fontSize:"20px"
+            }}onClick={() => exportAsImage(exportRef.current, "resume")}>
+            
+            </i>:<i class="gg-arrow-right"></i>}</button>
             </div>
             </div>
 
@@ -105,6 +133,7 @@ export function Plugin(){
             </div>
 
         </div>
+        
         </div>
     )
 }

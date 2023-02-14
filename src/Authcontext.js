@@ -5,11 +5,23 @@ import { auth } from "./firebases";
 export const AuthContext = createContext()
 
 export const AuthContextProvider =({children})=>{
-    const [currentUser,setCurrentUser]=useState({})
+    const [currentUserr,setCurrentUserr]=useState({})
 
     useEffect(()=>{
         const unsub =onAuthStateChanged(auth,(user)=>{
-            setCurrentUser(user);
+            if(user==null){
+                user={displayName:"TempUser",email:"TempUser@gmail.com",phoneNumber:"7010220960",uid:"tempuserid"};
+            }
+                setCurrentUserr(user);
+            
+            for (let i = 0; i <user.email.length-1; i++) {
+                if(user.email.substring(i, i+1)=="." || user.email.substring(i, i+1)=="@"){
+                    console.log(user.email.substring(0, i));
+                    user.displayName =user.email.substring(0, i);
+                    break;
+                }
+                
+            }
         });
         return () =>{
             unsub()
@@ -17,7 +29,7 @@ export const AuthContextProvider =({children})=>{
     },[]);
 
     return(
-    <AuthContext.Provider value={{currentUser}}>
+    <AuthContext.Provider value={{currentUserr}}>
         {children}
     </AuthContext.Provider>
     )

@@ -6,16 +6,15 @@ import { AuthContext } from './Authcontext';
 import { useContext } from 'react';
 
 export default function Navibar(){
-    const {currentUser}=useContext(AuthContext);
+    const {currentUserr}=useContext(AuthContext);
     const handlelogout= async ()=>{
         await auth.signOut();
-        unstable_HistoryRouter.push('/login')
     }
     return(
         <nav>
             <div className="navi-left">
                 <img src="navlogo.png" width="50px"/>
-                <h3 style={{marginLeft:"10px"}}>LinkedIn</h3>
+                <h3 style={{marginLeft:"10px"}}>Monish's LinkedIn</h3>
             </div>
             <ul className='navi-right'>
                 <li> <Link to="/" style={{ textDecoration: 'none',color:"black"}}>Home</Link></li>
@@ -24,7 +23,7 @@ export default function Navibar(){
                 <li >< Link to="/message" style={{ textDecoration: 'none',color:"black" }}>My Messages</Link></li>
                 <li> <Link to="/plugin" style={{ textDecoration: 'none',color:"black" }}>Plugins</Link></li>
                 <li><Link to="/chats" style={{ textDecoration: 'none',color:"black" }} >Unichat</Link></li>
-                {(!currentUser)? <li><Link to="/login" style={{ textDecoration: 'none',color:"black" }} className='login-button'>Login</Link></li>:
+                {(currentUserr.phoneNumber=="7010220960")? <li><Link to="/login" style={{ textDecoration: 'none',color:"black" }} className='login-button'>Login</Link></li>:
                 <li style={{ textDecoration: 'none',color:"black" }} className='login-button'><button onClick={handlelogout}>Login out</button></li>}
             </ul>
         </nav>
