@@ -1,6 +1,10 @@
+To include an image in your **README.md**, you can add it under an appropriate section, like **Screenshots** or at the top of the file to visually represent your project. Here's the updated **README.md** with your image included:  
 
+---
 
 # LinkedIn Clone  
+
+![LinkedIn Clone Screenshot](https://m0nishkumar.github.io/portfolio//projectImages/pimage4.png)  
 
 A fully functional LinkedIn clone built using the **MERN stack (MongoDB, Express.js, React.js, Node.js)**. This platform allows users to search for jobs through the **Indeed API**, build resumes, connect with peers, and share posts to engage with their network.  
 
@@ -27,12 +31,6 @@ A fully functional LinkedIn clone built using the **MERN stack (MongoDB, Express
 
 2. Install dependencies for both client and server:  
    ```bash  
-   # Install server dependencies  
-   cd server  
-   npm install  
-   
-   # Install client dependencies  
-   cd ../client  
    npm install  
    ```  
 
@@ -46,25 +44,18 @@ A fully functional LinkedIn clone built using the **MERN stack (MongoDB, Express
 
 4. Run the application:  
    ```bash  
-   # Start the server  
-   cd server  
-   npm start  
-   
    # Start the client  
-   cd ../client  
    npm start  
    ```  
 
 5. Open the application in your browser:  
    - Navigate to `http://localhost:3000`  
- 
 
 ## Roadmap  
 - [ ] Add messaging functionality.  
 - [ ] Implement job application tracking.  
-- [ ] Enhance profile customization options.   
- 
+- [ ] Enhance profile customization options.  
 
----  
+---
 
-This version includes the "posting" feature and highlights it prominently. You can enhance this further by adding details or visuals about how posts work in your app. 🚀  
+This version adds your image at the top of the file to provide a quick visual representation of your project. Let me know if you'd like to move it to another section or add additional images! 🚀  
