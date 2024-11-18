@@ -4,7 +4,7 @@ To include an image in your **README.md**, you can add it under an appropriate s
 
 # LinkedIn Clone  
 
-![LinkedIn Clone Screenshot](https://m0nishkumar.github.io/portfolio//projectImages/pimage4.png)  
+![LinkedIn Clone Screenshot](https://m0nishkumar.github.io/portfolio//projectImages/linkedin.png)  
 
 A fully functional LinkedIn clone built using the **MERN stack (MongoDB, Express.js, React.js, Node.js)**. This platform allows users to search for jobs through the **Indeed API**, build resumes, connect with peers, and share posts to engage with their network.  
 
