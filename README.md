@@ -2,7 +2,7 @@ To include an image in your **README.md**, you can add it under an appropriate s
 
 ---
 
-# LinkedIn Clone  
+# BIT LinkedIn  
 
 ![LinkedIn Clone Screenshot](https://m0nishkumar.github.io/portfolio//projectImages/linkedin.png)  
 
